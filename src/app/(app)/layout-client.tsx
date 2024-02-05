@@ -2,9 +2,9 @@
 
 import type { TProps } from '@/types'
 
-import { useState } from 'react'
 import { cn } from '@/utils/cn'
-import { Button, Layout, Menu, theme, MenuProps } from 'antd'
+import { useState } from 'react'
+import { Button, Layout, Menu, MenuProps } from 'antd'
 import {
 	DashboardOutlined,
 	MenuFoldOutlined,
@@ -56,23 +56,26 @@ export default function AppLayoutClient({ children }: TProps) {
 	)
 
 	return (
-		<Layout className='h-screen !bg-[url(/img/bg2.jpg)] !bg-cover !bg-top !bg-no-repeat overflow-hidden'>
+		<Layout className='h-screen !bg-[url(/img/bg2.jpg)] !bg-cover !bg-top !bg-no-repeat'>
 			<div className='absolute inset-0 z-0 bg-black/90 backdrop-blur-md'></div>
 			<Layout.Sider
 				{...{ collapsed }}
 				width={250}
-				className='!bg-white/[0.09] !backdrop-blur-md p-2 border-r border-white border-opacity-10'
+				className='!bg-white/[0.09] !backdrop-blur-md border-r border-white border-opacity-10 !sticky !top-0'
 				onCollapse={(v) => setCollapsed(v)}
 			>
-				<Menu
-					theme='dark'
-					mode='inline'
-					className='!bg-transparent'
-					defaultSelectedKeys={['Home']}
-					items={items}
-				/>
+				<div className='h-16 flex items-center px-3 text-lg'>R.K.</div>
+				<div className='p-1'>
+					<Menu
+						theme='dark'
+						mode='inline'
+						className='!bg-transparent'
+						defaultSelectedKeys={['Home']}
+						items={items}
+					/>
+				</div>
 			</Layout.Sider>
-			<div className='flex-1 overflow-auto z-10 relative'>
+			<div className='flex-1 z-10 relative overflow-auto'>
 				<Layout.Header
 					className={cn(
 						'!p-0 m-3 !bg-white/[0.09] !backdrop-blur-md !rounded-lg !sticky !top-3 z-50',
@@ -89,7 +92,7 @@ export default function AppLayoutClient({ children }: TProps) {
 						}}
 					/>
 				</Layout.Header>
-				<Layout.Content className='overflow-auto px-3'>
+				<Layout.Content className='px-3'>
 					<div className='h-[1200px] '>{children}</div>
 				</Layout.Content>
 				<Layout.Footer className='h-6 !py-0 flex items-center !px-2 mt-3 !bg-white/[0.09] !backdrop-blur-md !sticky !bottom-0 z-50'>
