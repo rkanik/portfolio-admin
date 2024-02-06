@@ -11,6 +11,7 @@ import {
 	MenuUnfoldOutlined,
 	OrderedListOutlined,
 	ProjectOutlined,
+	UserOutlined,
 } from '@ant-design/icons'
 import Link from 'next/link'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
@@ -44,6 +45,11 @@ export default function AppLayoutClient({ children }: TProps) {
 				icon: <DashboardOutlined />,
 			},
 			{
+				href: `/${user?.user_metadata.username}`,
+				label: 'Profile',
+				icon: <UserOutlined />,
+			},
+			{
 				label: 'Projects',
 				href: '/projects',
 				icon: <ProjectOutlined />,
@@ -67,10 +73,11 @@ export default function AppLayoutClient({ children }: TProps) {
 		// supabase.auth
 		// 	.updateUser({
 		// 		data: {
-		// 			name: 'RK Anik',
-		// 			dob: '02-02-1997',
-		// 			gender: 'male',
-		// 			thumbnail: 'https://avatars.githubusercontent.com/u/30260735',
+		// 			username: 'rkanik',
+		// 			// name: 'RK Anik',
+		// 			// dob: '02-02-1997',
+		// 			// gender: 'male',
+		// 			// thumbnail: 'https://avatars.githubusercontent.com/u/30260735',
 		// 		},
 		// 	})
 		// 	.then((res) => {
@@ -105,8 +112,11 @@ export default function AppLayoutClient({ children }: TProps) {
 						items={items}
 					/>
 				</Layout.Sider>
-				<div className='relative flex-1 flex flex-col '>
-					<div className='flex-1 z-10 relative overflow-auto'>
+				<div className='relative flex-1 flex flex-col'>
+					<div
+						id='scrollable'
+						className='flex-1 z-10 relative overflow-auto scroll-smooth'
+					>
 						<Layout.Header className='!px-3 m-3 !bg-white/[0.09] !backdrop-blur-md !rounded-lg !sticky !top-3 z-50 border border-white border-opacity-5 flex items-center justify-between'>
 							<Button
 								type='text'
