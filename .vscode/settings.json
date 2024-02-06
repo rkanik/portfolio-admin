@@ -4,6 +4,7 @@
       "antd",
       "clsx",
       "nextjs",
-      "Sider"
+      "Sider",
+      "supabase"
    ]
 }

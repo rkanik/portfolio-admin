@@ -4,7 +4,7 @@ import type { TProps } from '@/types'
 
 import { cn } from '@/utils/cn'
 import { useState } from 'react'
-import { Button, Layout, Menu, MenuProps } from 'antd'
+import { Avatar, Button, Dropdown, Layout, Menu, MenuProps } from 'antd'
 import {
 	DashboardOutlined,
 	MenuFoldOutlined,
@@ -13,6 +13,9 @@ import {
 	ProjectOutlined,
 } from '@ant-design/icons'
 import Link from 'next/link'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { Database } from '@/types/supabase'
+import { useRouter } from 'next/navigation'
 
 type MenuItem = Required<MenuProps>['items'][number]
 
@@ -27,6 +30,9 @@ const toMenuItems = (items: any[]): MenuItem[] => {
 
 export default function AppLayoutClient({ children }: TProps) {
 	const [collapsed, setCollapsed] = useState(false)
+
+	const router = useRouter()
+	const supabase = createClientComponentClient<Database>()
 
 	const [items] = useState(
 		toMenuItems([
@@ -76,17 +82,31 @@ export default function AppLayoutClient({ children }: TProps) {
 				</Layout.Sider>
 				<div className='relative flex-1 flex flex-col '>
 					<div className='flex-1 z-10 relative overflow-auto'>
-						<Layout.Header className='!p-0 m-3 !bg-white/[0.09] !backdrop-blur-md !rounded-lg !sticky !top-3 z-50 border border-white border-opacity-5'>
+						<Layout.Header className='!px-3 m-3 !bg-white/[0.09] !backdrop-blur-md !rounded-lg !sticky !top-3 z-50 border border-white border-opacity-5 flex items-center justify-between'>
 							<Button
 								type='text'
 								icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
 								onClick={() => setCollapsed(!collapsed)}
-								style={{
-									fontSize: '16px',
-									width: 64,
-									height: 64,
-								}}
 							/>
+
+							<Dropdown
+								menu={{
+									items: [
+										{
+											key: 'logout',
+											label: 'Logout',
+											async onClick(v) {
+												await supabase.auth.signOut()
+												router.replace('/login')
+											},
+										},
+									],
+								}}
+								placement='bottomRight'
+								arrow={{ pointAtCenter: true }}
+							>
+								<Avatar>U</Avatar>
+							</Dropdown>
 						</Layout.Header>
 						<Layout.Content className='px-3'>
 							<div className='h-[1200px] '>{children}</div>
