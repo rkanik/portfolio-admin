@@ -5,3 +5,5 @@ type FC = Readonly<{
 export type TProps = FC & {
 	//
 }
+
+export type Maybe<T> = T | undefined | null

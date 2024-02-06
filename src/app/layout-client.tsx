@@ -8,6 +8,11 @@ export default function RootLayoutClient({ children }: TProps) {
 		<ConfigProvider
 			theme={{
 				algorithm: theme.darkAlgorithm,
+				components: {
+					Button: {
+						defaultShadow: 'none',
+					},
+				},
 			}}
 		>
 			<App>{children}</App>

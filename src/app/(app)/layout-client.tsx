@@ -16,6 +16,7 @@ import Link from 'next/link'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { Database } from '@/types/supabase'
 import { useRouter } from 'next/navigation'
+import { useAuthContext } from '@/context/useAuthContext'
 
 type MenuItem = Required<MenuProps>['items'][number]
 
@@ -33,6 +34,7 @@ export default function AppLayoutClient({ children }: TProps) {
 
 	const router = useRouter()
 	const supabase = createClientComponentClient<Database>()
+	const { user } = useAuthContext()
 
 	const [items] = useState(
 		toMenuItems([
@@ -61,8 +63,26 @@ export default function AppLayoutClient({ children }: TProps) {
 		]),
 	)
 
+	const onUpdate = () => {
+		// supabase.auth
+		// 	.updateUser({
+		// 		data: {
+		// 			name: 'RK Anik',
+		// 			dob: '02-02-1997',
+		// 			gender: 'male',
+		// 			thumbnail: 'https://avatars.githubusercontent.com/u/30260735',
+		// 		},
+		// 	})
+		// 	.then((res) => {
+		// 		console.log(res)
+		// 		supabase.auth.getUser().then((res) => {
+		// 			console.log(res)
+		// 		})
+		// 	})
+	}
+
 	return (
-		<div className='h-screen !bg-[url(/img/bg3.jpg)] !bg-cover !bg-top !bg-no-repeat flex flex-col overflow-hidden'>
+		<div className='h-screen !bg-[url(/img/bg2.jpg)] !bg-cover !bg-top !bg-no-repeat flex flex-col overflow-hidden'>
 			<div className='flex flex-1 overflow-hidden'>
 				<div className='absolute inset-0 z-0 bg-black/90 backdrop-blur-md'></div>
 				<Layout.Sider
@@ -71,7 +91,12 @@ export default function AppLayoutClient({ children }: TProps) {
 					className='!bg-white/[0.09] !backdrop-blur-md border-r border-white border-opacity-10 !sticky !top-0'
 					onCollapse={(v) => setCollapsed(v)}
 				>
-					<div className='h-16 flex items-center px-3 text-lg'>R.K.</div>
+					<div
+						className='h-16 flex items-center px-3 text-lg'
+						onClick={onUpdate}
+					>
+						{user?.user_metadata.name}
+					</div>
 					<Menu
 						theme='dark'
 						mode='inline'
@@ -108,9 +133,7 @@ export default function AppLayoutClient({ children }: TProps) {
 								<Avatar>U</Avatar>
 							</Dropdown>
 						</Layout.Header>
-						<Layout.Content className='px-3'>
-							<div className='h-[1200px] '>{children}</div>
-						</Layout.Content>
+						<Layout.Content className='px-3'>{children}</Layout.Content>
 					</div>
 				</div>
 			</div>
